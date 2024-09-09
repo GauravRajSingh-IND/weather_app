@@ -1,5 +1,7 @@
 import tkinter
 
+from news_api_function import get_current_article_data, get_news_data
+
 FONT = ('arial', 15, "bold")
 COLOR = "snow"
 
@@ -19,6 +21,9 @@ class UI:
         # Draw rectangles for different sections
         self.draw_section()
 
+        # news data of current article
+        self.current_article = get_news_data()
+        self.news_data = get_current_article_data(self.current_article)
 
     def exit_window(self):
         self.window.mainloop()
