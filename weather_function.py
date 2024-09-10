@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 import pytz
 import dotenv
 import requests
@@ -105,3 +107,38 @@ def get_timezone_code(latitude: float, longitude: float) -> str:
 
     except Exception as e:
         return f"An error occurred: {e}"
+
+
+def get_datetime(timezone: str) -> dict:
+    """
+    Get the current date and time for a specified timezone.
+
+    Args:
+        timezone (str): The name of the timezone (e.g., 'Asia/Kolkata').
+
+    Returns:
+        dict: A dictionary containing the formatted date, time, and year.
+              Returns an error message if the timezone is invalid.
+    """
+    try:
+        # Initialize the timezone
+        tz = pytz.timezone(timezone)
+
+        # Get the current date and time in the specified timezone
+        today_now = datetime.now(tz)
+
+        # Format the date and time
+        formatted_date = today_now.strftime("%d, %B")
+        formatted_time = today_now.strftime("%H:%M:%S")
+        year = today_now.strftime("%Y")  # Use %Y for a four-digit year
+
+        return {
+            "date": formatted_date,
+            "time": formatted_time,
+            "year": year
+        }
+
+    except pytz.UnknownTimeZoneError:
+        return {"error": "Invalid timezone specified. Please provide a valid timezone."}
+    except Exception as e:
+        return {"error": f"An unexpected error occurred: {e}"}
