@@ -1,4 +1,7 @@
 import tkinter
+import re
+
+from weather_function import get_location, get_timezone_code, get_datetime, get_weather
 
 FONT = ('arial', 15, "bold")
 COLOR = "snow"
@@ -6,6 +9,17 @@ COLOR = "snow"
 class UI:
 
     def __init__(self):
+
+        self.weather_icon = None
+        self.icon = None
+
+        # weather parameters
+        self.location_latlng = get_location()
+        self.timezone = get_timezone_code(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
+        self.datetime_now = get_datetime(timezone=self.timezone)
+        self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
+
+        print(self.weather_data)
 
         self.window = tkinter.Tk()
         self.window.title("Weather")
@@ -19,6 +33,36 @@ class UI:
         # Draw rectangles for different sections
         self.draw_section()
 
+        # Weather Tile Section.
+        self.weather_suburb = self.canvas.create_text(150, 110, text="", font= ('arial', 30, 'bold'), fill= 'snow',
+                                                      width= 200, anchor= tkinter.CENTER, justify= tkinter.CENTER)
+        self.weather_temperature = self.canvas.create_text(170, 190, text="", font= ('arial', 120, 'bold'), fill= 'gray25',
+                                                      width= 250)
+        self.weather_feels_like = self.canvas.create_text(160, 270, text="", font=('arial', 20, 'italic'),
+                                                          fill='gray15', width=250)
+        self.weather_description = self.canvas.create_text(150, 355, text="", font=('arial', 25, 'bold italic'),
+                                fill='gray15', width=250, anchor=tkinter.CENTER)
+
+        self.draw_weather()
+
+
+    def draw_weather(self):
+
+        suburb_name = f"{self.weather_data['name']}"
+        temperature = f"{int(self.weather_data['main']['temp'])}{chr(176)}"
+        feels_like = f"feels like: {self.weather_data['main']['feels_like']}{chr(176)}C"
+        description = self.weather_data['weather'][0]['description'].title()
+        self.icon = tkinter.PhotoImage(file=self.get_icon_link(icon=self.weather_data['weather'][0]['icon']))
+
+        # add country name to the weather tile.
+        self.canvas.itemconfig(self.weather_suburb, text=suburb_name)
+        self.canvas.itemconfig(self.weather_temperature, text=temperature)
+        self.canvas.itemconfig(self.weather_feels_like, text=feels_like)
+        self.canvas.itemconfig(self.weather_description, text=description)
+
+        # add photo of the icon
+        self.weather_icon = self.canvas.create_image(120, 310, image=self.icon)
+        self.weather_icon_second = self.canvas.create_image(180, 310, image=self.icon)
 
     def exit_window(self):
         self.window.mainloop()
@@ -43,6 +87,22 @@ class UI:
         self.canvas.create_rectangle(550, 50, 1150, 80, fill=COLOR, width=1, outline=COLOR)
         self.canvas.create_text(850, 65, text="NEWS", font=FONT, width=100, anchor="center", fill= "black")
         self.canvas.place(x=0, y=0)
+
+    def get_icon_link(self, icon):
+
+        path = None
+        pattern = r'(\d+)(\D+)'
+        match = re.match(pattern, icon)
+        if match:
+            number = int(match.group(1))
+            letter = match.group(2)
+
+            if letter == 'n':
+                path = f"images/Icons/night/{icon}@2x.png"
+            elif letter == 'd':
+                path = f"images/Icons/day/{icon}@2x.png"
+
+        return path
 
 app = UI()
 app.exit_window()

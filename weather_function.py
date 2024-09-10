@@ -132,7 +132,7 @@ def get_datetime(timezone: str) -> dict:
         formatted_date = today_now.strftime("%d, %B")
         formatted_time = today_now.strftime("%H:%M:%S")
         year = today_now.strftime("%Y")
-        day = today_now.strftime("%YA")# Use %Y for a four-digit year
+        day = today_now.strftime("%A")# Use %Y for a four-digit year
 
         return {
             "date": formatted_date,
