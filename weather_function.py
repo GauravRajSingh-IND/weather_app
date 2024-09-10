@@ -1,8 +1,12 @@
 import os
+import pytz
 import dotenv
 import requests
 import geocoder
+
 from geopy.geocoders import Nominatim
+from timezonefinder import TimezoneFinder
+
 
 dotenv.load_dotenv()
 
@@ -39,7 +43,6 @@ def get_location(address: str= None) -> tuple:
     except Exception as e:
         print(f"Error occurred: {e}")
         return 26.9196, 75.7878
-
 
 #TODO: get weather data using location of the user
 def get_weather(latitude: float, longitude: float, mode: str="json", units: str="metric", lang: str="en") -> dict:
@@ -79,3 +82,16 @@ def get_weather(latitude: float, longitude: float, mode: str="json", units: str=
     except requests.exceptions.RequestException as e:
         print(f"Error occurred while fetching weather data: {e}")
         return {"error": str(e)}
+
+
+def get_timezone_code(latitude: float, longitude: float) -> str:
+    """
+    Get name of timezone name using latitude and longitude.
+    :param latitude: latitude of the location.
+    :param longitude: longitude of the location
+    :return: name of timezone
+    """
+
+    timezone = TimezoneFinder()
+    return timezone.timezone_at(lat=latitude, lng=longitude)
+
