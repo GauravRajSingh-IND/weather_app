@@ -62,9 +62,9 @@ class UI:
         self.description = self.canvas.create_text(850, 625, text="", font=('arial', 25, 'bold italic'), fill= "blanched almond",
                                              justify=tkinter.CENTER, width=550, tags='news')
 
-        self.write_article_data()
+        self.draw_button()
 
-        print(self.article_data)
+        self.write_article_data()
 
     def exit_window(self):
         self.window.mainloop()
@@ -127,6 +127,33 @@ class UI:
         self.canvas.tag_raise(self.author)
 
         self.window.after(1000000, self.write_article_data)
+
+    def draw_button(self):
+
+        self.next_button = tkinter.Button(self.window, bg= "snow", fg= "black", height= 1, highlightthickness= 0,
+                                          text= "NEXT", font= ('arial', 15, 'bold'), command= self.next_command)
+        self.next_button.place(x=900, y=750)
+
+        self.previous_button = tkinter.Button(self.window, bg="snow", fg="black", height=1, highlightthickness=0,
+                                          text="PREV", font= ('arial', 15, 'bold'), command= self.previous_command)
+        self.previous_button.place(x=750, y=750)
+
+    def next_command(self):
+
+        if  len(self.articles) >= self.article_number:
+            self.article_number += 1
+
+        self.article_data = get_current_article_data(articles=self.articles, article_no=self.article_number)
+        self.write_article_data()
+
+    def previous_command(self):
+
+        if  self.article_number == 0:
+            pass
+        else:
+            self.article_number -= 1
+            self.article_data = get_current_article_data(articles=self.articles, article_no=self.article_number)
+            self.write_article_data()
 
 
 app = UI()
