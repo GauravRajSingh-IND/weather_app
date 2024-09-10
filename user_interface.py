@@ -7,6 +7,7 @@ from weather_function import get_location, get_timezone_code, get_datetime, get_
 
 FONT = ('arial', 15, "bold")
 COLOR = "snow"
+WIND_ICON= "↑"
 
 class UI:
 
@@ -18,7 +19,7 @@ class UI:
 
         # weather parameters
         self.time_now = None
-        self.location_latlng = get_location(address= "jodhpur, rajasthan, india")
+        self.location_latlng = get_location(address="jodhpur, india")
         self.timezone = get_timezone_code(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
@@ -53,12 +54,51 @@ class UI:
         self.weather_day = self.canvas.create_text(375, 145, text="", font=('arial', 25, 'bold'),
                                             fill='gray15', width=250, anchor=tkinter.CENTER)
 
+        self.weather_wind_degree = self.canvas.create_text(375, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'), fill='gray15',
+                                                           width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_2 = self.canvas.create_text(335, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_3 = self.canvas.create_text(295, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_4 = self.canvas.create_text(415, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_5 = self.canvas.create_text(455, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_6 = self.canvas.create_text(375, 270, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'), fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_7 = self.canvas.create_text(335, 270, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_8 = self.canvas.create_text(295, 270, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_9 = self.canvas.create_text(415, 270, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
+                                                             fill='gray15',
+                                                             width=250, anchor=tkinter.CENTER)
+        self.weather_wind_degree_10 = self.canvas.create_text(455, 270, text=WIND_ICON, angle=0,
+                                                              font=('arial', 30, 'bold'),
+                                                              fill='gray15',
+                                                              width=250, anchor=tkinter.CENTER)
+        self.weather_wind_speed = self.canvas.create_text(370, 210, text="", angle=0,
+                                                              font=('arial', 15, 'bold'),
+                                                              fill='gray15',
+                                                              width=250, anchor=tkinter.CENTER)
+
+
         self.update_time()
-        self.update_date(self.weather_time)
+        self.update_date()
         self.draw_weather()
 
 
-    def update_date(self, time):
+    def update_date(self):
 
         # get latest datetime by using get_datetime function.
         self.datetime_now = get_datetime(timezone=self.timezone)
@@ -90,6 +130,8 @@ class UI:
         temperature = f"{int(self.weather_data['main']['temp'])}{chr(176)}"
         feels_like = f"feels like: {self.weather_data['main']['feels_like']}{chr(176)}C"
         description = self.weather_data['weather'][0]['description'].title()
+        wind_angle = self.weather_data['wind']['deg']
+        wind_speed = self.weather_data['wind']['speed']
         self.icon = tkinter.PhotoImage(file=self.get_icon_link(icon=self.weather_data['weather'][0]['icon']))
 
         # add country name to the weather tile.
@@ -97,6 +139,18 @@ class UI:
         self.canvas.itemconfig(self.weather_temperature, text=temperature)
         self.canvas.itemconfig(self.weather_feels_like, text=feels_like)
         self.canvas.itemconfig(self.weather_description, text=description)
+        self.canvas.itemconfig(self.weather_wind_degree, angle=wind_angle )
+        self.canvas.itemconfig(self.weather_wind_degree_2, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_3, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_4, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_5, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_6, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_7, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_8, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_9, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_degree_10, angle=wind_angle)
+        self.canvas.itemconfig(self.weather_wind_speed, text=f"wind speed : {wind_speed}m/s")
+
 
         # add photo of the icon
         self.weather_icon = self.canvas.create_image(120, 310, image=self.icon)
