@@ -10,8 +10,9 @@ class UI:
 
     def __init__(self):
 
-        self.weather_icon = None
-        self.icon = None
+        # self.weather_icon_second = None
+        # self.weather_icon = None
+        # self.icon = None
 
         # weather parameters
         self.location_latlng = get_location()
@@ -63,6 +64,9 @@ class UI:
         # add photo of the icon
         self.weather_icon = self.canvas.create_image(120, 310, image=self.icon)
         self.weather_icon_second = self.canvas.create_image(180, 310, image=self.icon)
+
+        # update the data in every five minutes.
+        self.window.after(300000, self.draw_weather)
 
     def exit_window(self):
         self.window.mainloop()
