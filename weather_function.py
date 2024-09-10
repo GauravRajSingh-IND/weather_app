@@ -86,12 +86,22 @@ def get_weather(latitude: float, longitude: float, mode: str="json", units: str=
 
 def get_timezone_code(latitude: float, longitude: float) -> str:
     """
-    Get name of timezone name using latitude and longitude.
+    Get the name of the timezone using latitude and longitude.
     :param latitude: latitude of the location.
     :param longitude: longitude of the location
     :return: name of timezone
     """
 
     timezone = TimezoneFinder()
-    return timezone.timezone_at(lat=latitude, lng=longitude)
+    try:
+        # Retrieve the timezone name based on latitude and longitude
+        timezone_name = timezone.timezone_at(lat=latitude, lng=longitude)
 
+        # Check if a valid timezone name was found
+        if timezone_name:
+            return timezone_name
+        else:
+            return "Timezone not found for the specified coordinates."
+
+    except Exception as e:
+        return f"An error occurred: {e}"
