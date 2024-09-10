@@ -28,8 +28,6 @@ class UI:
 
     def __init__(self):
 
-        self.photo = None
-
         self.window = tkinter.Tk()
         self.window.title("Weather")
         self.window.geometry("1200x1200")
