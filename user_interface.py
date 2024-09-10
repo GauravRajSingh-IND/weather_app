@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 from news_api_function import get_current_article_data, get_news_data
 import re
 
+from pygame.display import update
+
 from weather_function import get_location, get_timezone_code, get_datetime, get_weather
 
 FONT = ('arial', 15, "bold")
@@ -31,11 +33,13 @@ class UI:
 
     def __init__(self):
 
-        self.weather_icon = None
-        self.icon = None
+        # self.weather_icon_second = None
+        # self.weather_icon = None
+        # self.icon = None
 
         # weather parameters
-        self.location_latlng = get_location()
+        self.time_now = None
+        self.location_latlng = get_location(address= "jodhpur, rajasthan, india")
         self.timezone = get_timezone_code(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
@@ -86,11 +90,45 @@ class UI:
                                                           fill='gray15', width=250)
         self.weather_description = self.canvas.create_text(150, 355, text="", font=('arial', 25, 'bold italic'),
                                 fill='gray15', width=250, anchor=tkinter.CENTER)
+        self.weather_time = self.canvas.create_text(375, 110, text="", font=('arial', 35, 'bold italic'),
+                                                           fill='gray15', width=250, anchor=tkinter.CENTER)
+        self.weather_date = self.canvas.create_text(375, 175, text="", font=('arial', 20, 'bold italic'),
+                                            fill='gray15', width=250, anchor=tkinter.CENTER)
+        self.weather_day = self.canvas.create_text(375, 145, text="", font=('arial', 25, 'bold'),
+                                            fill='gray15', width=250, anchor=tkinter.CENTER)
 
+        self.update_time()
+        self.update_date(self.weather_time)
         self.draw_weather()
 
 
+    def update_date(self, time):
+
+        # get latest datetime by using get_datetime function.
+        self.datetime_now = get_datetime(timezone=self.timezone)
+
+        date = self.datetime_now['date']
+        day = self.datetime_now['day']
+
+        self.canvas.itemconfig(self.weather_date, text=date)
+        self.canvas.itemconfig(self.weather_day, text=day)
+
+        self.window.after(60000, self.update_date)
+
+    def update_time(self):
+
+        # Get the current date and time in the specified timezone
+        self.datetime_now = get_datetime(timezone=self.timezone)
+        self.time_now = self.datetime_now['time']
+
+        self.canvas.itemconfig(self.weather_time, text=self.time_now)
+        self.window.after(1000, self.update_time)
+
     def draw_weather(self):
+        """
+        Draw text and images on the weather tile and update them in every 5 minutes.
+        :return: None.
+        """
 
         suburb_name = f"{self.weather_data['name']}"
         temperature = f"{int(self.weather_data['main']['temp'])}{chr(176)}"
@@ -107,6 +145,9 @@ class UI:
         # add photo of the icon
         self.weather_icon = self.canvas.create_image(120, 310, image=self.icon)
         self.weather_icon_second = self.canvas.create_image(180, 310, image=self.icon)
+
+        # update the data in every five minutes.
+        self.window.after(300000, self.draw_weather)
 
     def exit_window(self):
         self.window.mainloop()
