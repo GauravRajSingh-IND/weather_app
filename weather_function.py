@@ -131,12 +131,14 @@ def get_datetime(timezone: str) -> dict:
         # Format the date and time
         formatted_date = today_now.strftime("%d, %B")
         formatted_time = today_now.strftime("%H:%M:%S")
-        year = today_now.strftime("%Y")  # Use %Y for a four-digit year
+        year = today_now.strftime("%Y")
+        day = today_now.strftime("%YA")# Use %Y for a four-digit year
 
         return {
             "date": formatted_date,
             "time": formatted_time,
-            "year": year
+            "year": year,
+            "day":day
         }
 
     except pytz.UnknownTimeZoneError:
