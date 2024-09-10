@@ -43,3 +43,6 @@ class UI:
         self.canvas.create_rectangle(550, 50, 1150, 80, fill=COLOR, width=1, outline=COLOR)
         self.canvas.create_text(850, 65, text="NEWS", font=FONT, width=100, anchor="center", fill= "black")
         self.canvas.place(x=0, y=0)
+
+app = UI()
+app.exit_window()
