@@ -138,6 +138,10 @@ class UI:
                                           text="PREV", font= ('arial', 15, 'bold'), command= self.previous_command)
         self.previous_button.place(x=750, y=750)
 
+        self.refresh_button = tkinter.Button(self.window, bg="snow", fg="black", height=1, highlightthickness=0,
+                                              text="🔄", font=('arial', 25, 'bold'), command=self.refresh_news)
+        self.refresh_button.place(x=1080, y=5)
+
     def next_command(self):
 
         if  len(self.articles) >= self.article_number:
@@ -155,6 +159,14 @@ class UI:
             self.article_data = get_current_article_data(articles=self.articles, article_no=self.article_number)
             self.write_article_data()
 
+    def refresh_news(self):
+        self.article_number = 0
+        self.articles_data_fetch = get_news_data()
+
+        # list of articles which have image url.
+        self.articles = [article for article in self.articles_data_fetch if article['urlToImage'] is not None]
+        self.article_data = get_current_article_data(articles=self.articles, article_no=self.article_number)
+        self.write_article_data()
 
 app = UI()
 app.exit_window()
