@@ -1,3 +1,4 @@
 .env
 /.env
 __pycache__/news_api_function.cpython-311.pyc
+/__pycache__/
