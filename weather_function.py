@@ -120,6 +120,7 @@ def get_datetime(timezone: str) -> dict:
         dict: A dictionary containing the formatted date, time, and year.
               Returns an error message if the timezone is invalid.
     """
+    
     try:
         # Initialize the timezone
         tz = pytz.timezone(timezone)
