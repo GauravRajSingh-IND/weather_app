@@ -18,12 +18,12 @@ class UI:
 
         # weather parameters
         self.time_now = None
-        self.location_latlng = get_location()
+        self.location_latlng = get_location(address= "jodhpur, rajasthan, india")
         self.timezone = get_timezone_code(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
 
-        print(self.datetime_now)
+        print(self.weather_data)
 
         self.window = tkinter.Tk()
         self.window.title("Weather")
@@ -70,7 +70,6 @@ class UI:
         self.canvas.itemconfig(self.weather_day, text=day)
 
         self.window.after(60000, self.update_date)
-
 
     def update_time(self):
 
