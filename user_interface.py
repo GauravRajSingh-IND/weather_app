@@ -1,7 +1,9 @@
 import tkinter
 import re
 
-from pygame.display import update
+from datetime import datetime
+
+import pytz
 
 from weather_function import get_location, get_timezone_code, get_datetime, get_weather
 
@@ -19,7 +21,7 @@ class UI:
 
         # weather parameters
         self.time_now = None
-        self.location_latlng = get_location(address="jodhpur, india")
+        self.location_latlng = get_location()
         self.timezone = get_timezone_code(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
@@ -66,19 +68,16 @@ class UI:
                                                              fill='gray15',
                                                              width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_5 = self.canvas.create_text(455, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
-                                                             fill='gray15',
-                                                             width=250, anchor=tkinter.CENTER)
+                                                             fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_6 = self.canvas.create_text(375, 270, text=WIND_ICON, angle=0,
                                                              font=('arial', 30, 'bold'), fill='gray15',
                                                              width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_7 = self.canvas.create_text(335, 270, text=WIND_ICON, angle=0,
                                                              font=('arial', 30, 'bold'),
-                                                             fill='gray15',
-                                                             width=250, anchor=tkinter.CENTER)
+                                                             fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_8 = self.canvas.create_text(295, 270, text=WIND_ICON, angle=0,
                                                              font=('arial', 30, 'bold'),
-                                                             fill='gray15',
-                                                             width=250, anchor=tkinter.CENTER)
+                                                             fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_9 = self.canvas.create_text(415, 270, text=WIND_ICON, angle=0,
                                                              font=('arial', 30, 'bold'),
                                                              fill='gray15',
@@ -91,6 +90,21 @@ class UI:
                                                               font=('arial', 15, 'bold'),
                                                               fill='gray15',
                                                               width=250, anchor=tkinter.CENTER)
+
+        self.weather_sunrise_icon = self.canvas.create_text(310, 320, text="🌅", angle=0,
+                                                              font=('arial', 50, 'bold'),
+                                                              fill='gray15',
+                                                              width=250, anchor=tkinter.CENTER)
+        self.weather_sunset_icon = self.canvas.create_text(440, 320, text="🌄", angle=0,
+                                                       font=('arial', 50, 'bold'),
+                                                       fill='gray15',
+                                                       width=250, anchor=tkinter.CENTER)
+
+        self.sunrise_text = self.canvas.create_text(310, 360, text="", angle=0, font=('arial', 20, 'bold'), fill='gray15',
+                                                              width=250, anchor=tkinter.CENTER)
+        self.sunset_text = self.canvas.create_text(440, 360, text="", angle=0, font=('arial', 20, 'bold'),
+                                                    fill='gray15',
+                                                    width=250, anchor=tkinter.CENTER)
 
 
         self.update_time()
@@ -132,6 +146,12 @@ class UI:
         description = self.weather_data['weather'][0]['description'].title()
         wind_angle = self.weather_data['wind']['deg']
         wind_speed = self.weather_data['wind']['speed']
+        latitude = self.weather_data['coord']['lat']
+        longitude = self.weather_data['coord']['lon']
+        time_zone = pytz.timezone(get_timezone_code(latitude, longitude))
+        sunrise = datetime.fromtimestamp(self.weather_data['sys']['sunrise']).strftime("%H:%M:%S")
+        sunset = datetime.fromtimestamp(self.weather_data['sys']['sunset']).strftime("%H:%M:%S")
+
         self.icon = tkinter.PhotoImage(file=self.get_icon_link(icon=self.weather_data['weather'][0]['icon']))
 
         # add country name to the weather tile.
@@ -150,7 +170,8 @@ class UI:
         self.canvas.itemconfig(self.weather_wind_degree_9, angle=wind_angle)
         self.canvas.itemconfig(self.weather_wind_degree_10, angle=wind_angle)
         self.canvas.itemconfig(self.weather_wind_speed, text=f"wind speed : {wind_speed}m/s")
-
+        self.canvas.itemconfig(self.sunrise_text, text= sunrise)
+        self.canvas.itemconfig(self.sunset_text, text=sunset)
 
         # add photo of the icon
         self.weather_icon = self.canvas.create_image(120, 310, image=self.icon)
