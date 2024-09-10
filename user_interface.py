@@ -47,8 +47,6 @@ class UI:
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
 
-        print(self.weather_data)
-
         self.window = tkinter.Tk()
         self.window.title("Weather")
         self.window.geometry("1200x1200")
@@ -82,7 +80,6 @@ class UI:
                                              justify=tkinter.CENTER, width=550, tags='news')
 
         self.draw_button()
-
         self.write_article_data()
         # Weather Tile Section.
         self.weather_suburb = self.canvas.create_text(150, 110, text="", font= ('arial', 30, 'bold'), fill= 'snow',
@@ -250,7 +247,8 @@ class UI:
 
     def write_article_data(self):
 
-            # Title update
+        # Title update
+
         title = self.article_data['title'].title()
         self.canvas.itemconfig(self.title, text=title)
 
@@ -260,7 +258,10 @@ class UI:
         self.canvas.coords(self.title_bg, bbox[0] - padding, bbox[1] - padding, bbox[2] + padding, bbox[3] + padding)
 
         # Author Name update
-        author = self.article_data['author'].title()
+        try:
+            author = self.article_data['author'].title()
+        except AttributeError:
+            author = "Unknown"
         self.canvas.itemconfig(self.author, text=author)
 
         # published text update.
