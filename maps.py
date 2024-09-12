@@ -1,14 +1,13 @@
-import requests
+import folium
 import math
-
 from weather_function import get_location
 
+# Replace with your actual OpenWeatherMap API key
+api_key = "04081e17627f601aa461ea47e4ec87e9"
 
-key = "04081e17627f601aa461ea47e4ec87e9"
 
-def lat_lon_to_tile(zoom):
+def lat_lon_to_tile(lat, lon, zoom):
     """Convert latitude and longitude to tile coordinates."""
-    lat, lon = get_location()
     lat_rad = math.radians(lat)
     n = 2 ** zoom
     x = int((lon + 180) / 360 * n)
@@ -16,22 +15,34 @@ def lat_lon_to_tile(zoom):
     return x, y
 
 
-def get_cloud_map(zoom, api_key=key):
-    """Fetch the cloud map image from OpenWeatherMap API."""
-    x, y = lat_lon_to_tile(zoom)
-    layer = 'temp_new'
-    url = f"https://tile.openweathermap.org/map/{layer}/{zoom}/{x}/{y}.png?appid={api_key}"
+def create_map_with_weather_layer(zoom= 5, api_key=api_key):
+    # Get latitude and longitude
+    lat, lon = get_location()
 
-    response = requests.get(url)
+    # Create a base map centered at the specified latitude and longitude
+    base_map = folium.Map(location=[lat, lon], zoom_start=zoom)
 
-    if response.status_code == 200:
-        with open('cloud_map.png', 'wb') as f:
-            f.write(response.content)
-        print("Map saved as 'cloud_map.png'")
-    else:
-        print(f"Error fetching map: {response.status_code}")
+    # Calculate tile coordinates
+    x, y = lat_lon_to_tile(lat, lon, zoom)
+
+    # Define the OpenWeatherMap tile layer for temperature
+    layer = f"https://tile.openweathermap.org/map/temp_new/{zoom}/{{x}}/{{y}}.png?appid={api_key}"
+
+    # Add the tile layer to the base map
+    folium.TileLayer(
+        tiles=layer,
+        attr='OpenWeatherMap',
+        name='Temperature Layer',
+        overlay=True,
+        control=True
+    ).add_to(base_map)
+
+    # Add layer control to toggle layers
+    folium.LayerControl().add_to(base_map)
+
+    # Save the map to an HTML file
+    base_map.save('weather_map.html')
 
 
-zoom_level = 5  # Zoom level
-
-get_cloud_map(zoom_level)
+# Create the map with the weather layer
+create_map_with_weather_layer()
