@@ -226,20 +226,17 @@ class UI:
 
     def draw_section(self):
 
-        # Draw weather area
+        # Draw weather
         self.canvas.create_rectangle(50, 50, 500, 390, fill="", width=3, outline=COLOR)
         self.canvas.create_rectangle(50, 50, 500, 80, fill=COLOR, width=1, outline=COLOR)
         self.canvas.create_text(275, 65, text="WEATHER", font=FONT, width=100, anchor="center", fill= "black")
 
-        # Draw stocks area
+        # Draw Maps
         self.canvas.create_rectangle(50, 430, 500, 800, fill="", width=3, outline=COLOR)
         self.canvas.create_rectangle(50, 430, 500, 460, fill=COLOR, width=1, outline=COLOR)
-        self.canvas.create_text(275, 445, text="FORECAST", font=FONT, width=100, anchor="center", fill= "black")
-        self.canvas.create_line(275, 450, 275, 800, fill=COLOR, width=2)
-        self.canvas.create_line(50, 563, 500, 563, fill=COLOR, width=2)
-        self.canvas.create_line(50, 676, 500, 676, fill=COLOR, width=2)
+        self.canvas.create_text(275, 445, text="Maps", font=FONT, width=100, anchor="center", fill= "black")
 
-        # Draw news area
+        # Draw news
         self.canvas.create_rectangle(550, 50, 1150, 800, fill="", width=3, outline=COLOR)
         self.canvas.create_rectangle(550, 50, 1150, 80, fill=COLOR, width=1, outline=COLOR)
         self.canvas.create_text(850, 65, text="NEWS", font=FONT, width=100, anchor="center", fill= "black")
