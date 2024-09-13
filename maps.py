@@ -15,7 +15,7 @@ def lat_lon_to_tile(lat, lon, zoom):
     return x, y
 
 
-def create_map_with_weather_layer(zoom= 5, api_key=api_key):
+def create_map_with_weather_layer(zoom= 3, api_key=api_key):
     # Get latitude and longitude
     lat, lon = get_location()
 

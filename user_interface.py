@@ -1,9 +1,11 @@
 import tkinter
+import webview
 
 from maps import create_map_with_weather_layer
 
 FONT = ('arial', 15, "bold")
 COLOR = "snow"
+html_file_path = '/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html'
 
 
 class UI:
