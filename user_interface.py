@@ -11,6 +11,9 @@ from datetime import datetime
 import pytz
 
 from weather_function import get_location, get_timezone_code, get_datetime, get_weather
+import webview
+
+from maps import create_map_with_weather_layer
 
 FONT = ('arial', 15, "bold")
 COLOR = "snow"
@@ -31,6 +34,8 @@ def get_image_url(url):
     image = image.resize((590, 400))
 
     return image
+html_file_path = '/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html'
+
 
 class UI:
 
@@ -47,6 +52,8 @@ class UI:
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
 
+        self.maps = create_map_with_weather_layer()
+
         self.window = tkinter.Tk()
         self.window.title("Weather")
         self.window.geometry("1200x1200")
@@ -55,6 +62,7 @@ class UI:
         self.canvas = tkinter.Canvas(self.window, height=1200, width=1200, highlightthickness=0)
         self.background_image = tkinter.PhotoImage(file="images/app_background.png")
         self.canvas.create_image(600, 370, image=self.background_image)
+
 
         # Draw rectangles for different sections
         self.draw_section()

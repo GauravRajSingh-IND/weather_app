@@ -10,8 +10,11 @@ from geopy.geocoders import Nominatim
 from timezonefinder import TimezoneFinder
 
 
+<<<<<<< HEAD
 dotenv.load_dotenv()
 
+=======
+>>>>>>> maps
 def get_location(address: str= None) -> tuple:
     """
     Get the geographical coordinates (latitude and longitude) for a given address.
@@ -44,6 +47,7 @@ def get_location(address: str= None) -> tuple:
 
     except Exception as e:
         print(f"Error occurred: {e}")
+<<<<<<< HEAD
         return 26.9196, 75.7878
 
 #TODO: get weather data using location of the user
@@ -145,3 +149,6 @@ def get_datetime(timezone: str) -> dict:
         return {"error": "Invalid timezone specified. Please provide a valid timezone."}
     except Exception as e:
         return {"error": f"An unexpected error occurred: {e}"}
+=======
+        return 26.9196, 75.7878
+>>>>>>> maps
