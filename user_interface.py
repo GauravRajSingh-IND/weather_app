@@ -1,18 +1,16 @@
+from weather_function import get_location, get_timezone_code, get_weather, get_datetime
+
 import io
 import tkinter
 import urllib.request
 from PIL import Image, ImageTk
 
-from news_api_function import get_current_article_data, get_news_data
 import re
-
+import pytz
+import webview
 from datetime import datetime
 
-import pytz
-
-from weather_function import get_location, get_timezone_code, get_datetime, get_weather
-import webview
-
+from news_api_function import get_current_article_data, get_news_data
 from maps import create_map_with_weather_layer
 
 FONT = ('arial', 15, "bold")
@@ -34,6 +32,7 @@ def get_image_url(url):
     image = image.resize((590, 400))
 
     return image
+
 html_file_path = '/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html'
 
 
@@ -89,34 +88,51 @@ class UI:
 
         self.draw_button()
         self.write_article_data()
+
+
         # Weather Tile Section.
-        self.weather_suburb = self.canvas.create_text(150, 110, text="", font= ('arial', 30, 'bold'), fill= 'snow',
-                                                      width= 200, anchor= tkinter.CENTER, justify= tkinter.CENTER)
-        self.weather_temperature = self.canvas.create_text(170, 190, text="", font= ('arial', 120, 'bold'), fill= 'gray25',
-                                                      width= 250)
+        self.weather_tile()
+
+
+        self.update_time()
+        self.update_date()
+        self.draw_weather()
+
+
+    def weather_tile(self):
+        self.weather_suburb = self.canvas.create_text(150, 110, text="", font=('arial', 30, 'bold'), fill='snow',
+                                                      width=200, anchor=tkinter.CENTER, justify=tkinter.CENTER)
+        self.weather_temperature = self.canvas.create_text(170, 190, text="", font=('arial', 120, 'bold'),
+                                                           fill='gray25',
+                                                           width=250)
         self.weather_feels_like = self.canvas.create_text(160, 270, text="", font=('arial', 20, 'italic'),
                                                           fill='gray15', width=250)
         self.weather_description = self.canvas.create_text(150, 355, text="", font=('arial', 25, 'bold italic'),
-                                fill='gray15', width=250, anchor=tkinter.CENTER)
-        self.weather_time = self.canvas.create_text(375, 110, text="", font=('arial', 35, 'bold italic'),
                                                            fill='gray15', width=250, anchor=tkinter.CENTER)
+        self.weather_time = self.canvas.create_text(375, 110, text="", font=('arial', 35, 'bold italic'),
+                                                    fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_date = self.canvas.create_text(375, 175, text="", font=('arial', 20, 'bold italic'),
-                                            fill='gray15', width=250, anchor=tkinter.CENTER)
+                                                    fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_day = self.canvas.create_text(375, 145, text="", font=('arial', 25, 'bold'),
-                                            fill='gray15', width=250, anchor=tkinter.CENTER)
+                                                   fill='gray15', width=250, anchor=tkinter.CENTER)
 
-        self.weather_wind_degree = self.canvas.create_text(375, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'), fill='gray15',
+        self.weather_wind_degree = self.canvas.create_text(375, 245, text=WIND_ICON, angle=0,
+                                                           font=('arial', 30, 'bold'), fill='gray15',
                                                            width=250, anchor=tkinter.CENTER)
-        self.weather_wind_degree_2 = self.canvas.create_text(335, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+        self.weather_wind_degree_2 = self.canvas.create_text(335, 245, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
                                                              fill='gray15',
                                                              width=250, anchor=tkinter.CENTER)
-        self.weather_wind_degree_3 = self.canvas.create_text(295, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+        self.weather_wind_degree_3 = self.canvas.create_text(295, 245, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
                                                              fill='gray15',
                                                              width=250, anchor=tkinter.CENTER)
-        self.weather_wind_degree_4 = self.canvas.create_text(415, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+        self.weather_wind_degree_4 = self.canvas.create_text(415, 245, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
                                                              fill='gray15',
                                                              width=250, anchor=tkinter.CENTER)
-        self.weather_wind_degree_5 = self.canvas.create_text(455, 245, text=WIND_ICON, angle=0, font=('arial', 30, 'bold'),
+        self.weather_wind_degree_5 = self.canvas.create_text(455, 245, text=WIND_ICON, angle=0,
+                                                             font=('arial', 30, 'bold'),
                                                              fill='gray15', width=250, anchor=tkinter.CENTER)
         self.weather_wind_degree_6 = self.canvas.create_text(375, 270, text=WIND_ICON, angle=0,
                                                              font=('arial', 30, 'bold'), fill='gray15',
@@ -136,30 +152,25 @@ class UI:
                                                               fill='gray15',
                                                               width=250, anchor=tkinter.CENTER)
         self.weather_wind_speed = self.canvas.create_text(370, 210, text="", angle=0,
-                                                              font=('arial', 15, 'bold'),
-                                                              fill='gray15',
-                                                              width=250, anchor=tkinter.CENTER)
+                                                          font=('arial', 15, 'bold'),
+                                                          fill='gray15',
+                                                          width=250, anchor=tkinter.CENTER)
 
         self.weather_sunrise_icon = self.canvas.create_text(310, 320, text="🌅", angle=0,
-                                                              font=('arial', 50, 'bold'),
-                                                              fill='gray15',
-                                                              width=250, anchor=tkinter.CENTER)
+                                                            font=('arial', 50, 'bold'),
+                                                            fill='gray15',
+                                                            width=250, anchor=tkinter.CENTER)
         self.weather_sunset_icon = self.canvas.create_text(440, 320, text="🌄", angle=0,
-                                                       font=('arial', 50, 'bold'),
-                                                       fill='gray15',
-                                                       width=250, anchor=tkinter.CENTER)
+                                                           font=('arial', 50, 'bold'),
+                                                           fill='gray15',
+                                                           width=250, anchor=tkinter.CENTER)
 
-        self.sunrise_text = self.canvas.create_text(310, 360, text="", angle=0, font=('arial', 20, 'bold'), fill='gray15',
-                                                              width=250, anchor=tkinter.CENTER)
-        self.sunset_text = self.canvas.create_text(440, 360, text="", angle=0, font=('arial', 20, 'bold'),
+        self.sunrise_text = self.canvas.create_text(310, 360, text="", angle=0, font=('arial', 20, 'bold'),
                                                     fill='gray15',
                                                     width=250, anchor=tkinter.CENTER)
-
-
-        self.update_time()
-        self.update_date()
-        self.draw_weather()
-
+        self.sunset_text = self.canvas.create_text(440, 360, text="", angle=0, font=('arial', 20, 'bold'),
+                                                   fill='gray15',
+                                                   width=250, anchor=tkinter.CENTER)
 
     def update_date(self):
 
