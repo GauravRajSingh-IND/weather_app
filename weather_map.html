@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_dfe16206ec46eb245796142d3842a6eb {
+                #map_a80b1aceb0b48d75a7b3024bc63c4716 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,14 +39,14 @@
 <body>
     
     
-            <div class="folium-map" id="map_dfe16206ec46eb245796142d3842a6eb" ></div>
+            <div class="folium-map" id="map_a80b1aceb0b48d75a7b3024bc63c4716" ></div>
         
 </body>
 <script>
     
     
-            var map_dfe16206ec46eb245796142d3842a6eb = L.map(
-                "map_dfe16206ec46eb245796142d3842a6eb",
+            var map_a80b1aceb0b48d75a7b3024bc63c4716 = L.map(
+                "map_a80b1aceb0b48d75a7b3024bc63c4716",
                 {
                     center: [26.9196, 75.7878],
                     crs: L.CRS.EPSG3857,
@@ -60,37 +60,37 @@
 
         
     
-            var tile_layer_eaf1acc8fe40dda14da1ed55fc04b73c = L.tileLayer(
+            var tile_layer_0b5b2373f17fbbf1fec912c81c309a0d = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_eaf1acc8fe40dda14da1ed55fc04b73c.addTo(map_dfe16206ec46eb245796142d3842a6eb);
+            tile_layer_0b5b2373f17fbbf1fec912c81c309a0d.addTo(map_a80b1aceb0b48d75a7b3024bc63c4716);
         
     
-            var tile_layer_920b090440e7985063b820ea6beb718d = L.tileLayer(
-                "https://tile.openweathermap.org/map/temp_new/3/{x}/{y}.png?appid=04081e17627f601aa461ea47e4ec87e9",
+            var tile_layer_511197b18bd4c29a14d956438c901d58 = L.tileLayer(
+                "https://tile.openweathermap.org/map/pressure_new/3/{x}/{y}.png?appid=04081e17627f601aa461ea47e4ec87e9",
                 {"attribution": "OpenWeatherMap", "detectRetina": false, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_920b090440e7985063b820ea6beb718d.addTo(map_dfe16206ec46eb245796142d3842a6eb);
+            tile_layer_511197b18bd4c29a14d956438c901d58.addTo(map_a80b1aceb0b48d75a7b3024bc63c4716);
         
     
-            var layer_control_603de260b90087fa9e012bf55f162b01_layers = {
+            var layer_control_16927128b6bc3e96c20ab1ad2c672f73_layers = {
                 base_layers : {
-                    "openstreetmap" : tile_layer_eaf1acc8fe40dda14da1ed55fc04b73c,
+                    "openstreetmap" : tile_layer_0b5b2373f17fbbf1fec912c81c309a0d,
                 },
                 overlays :  {
-                    "Temperature Layer" : tile_layer_920b090440e7985063b820ea6beb718d,
+                    "Temperature Layer" : tile_layer_511197b18bd4c29a14d956438c901d58,
                 },
             };
-            let layer_control_603de260b90087fa9e012bf55f162b01 = L.control.layers(
-                layer_control_603de260b90087fa9e012bf55f162b01_layers.base_layers,
-                layer_control_603de260b90087fa9e012bf55f162b01_layers.overlays,
+            let layer_control_16927128b6bc3e96c20ab1ad2c672f73 = L.control.layers(
+                layer_control_16927128b6bc3e96c20ab1ad2c672f73_layers.base_layers,
+                layer_control_16927128b6bc3e96c20ab1ad2c672f73_layers.overlays,
                 {"autoZIndex": true, "collapsed": true, "position": "topright"}
-            ).addTo(map_dfe16206ec46eb245796142d3842a6eb);
+            ).addTo(map_a80b1aceb0b48d75a7b3024bc63c4716);
 
         
 </script>

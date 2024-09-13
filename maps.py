@@ -15,7 +15,7 @@ def lat_lon_to_tile(lat, lon, zoom):
     return x, y
 
 
-def create_map_with_weather_layer(zoom= 3, api_key=api_key):
+def create_map_with_weather_layer(layer='temp_new', zoom= 3, api_key=api_key):
     # Get latitude and longitude
     lat, lon = get_location()
 
@@ -26,7 +26,7 @@ def create_map_with_weather_layer(zoom= 3, api_key=api_key):
     x, y = lat_lon_to_tile(lat, lon, zoom)
 
     # Define the OpenWeatherMap tile layer for temperature
-    layer = f"https://tile.openweathermap.org/map/temp_new/{zoom}/{{x}}/{{y}}.png?appid={api_key}"
+    layer = f"https://tile.openweathermap.org/map/{layer}/{zoom}/{{x}}/{{y}}.png?appid={api_key}"
 
     # Add the tile layer to the base map
     folium.TileLayer(

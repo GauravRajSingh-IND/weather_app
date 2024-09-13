@@ -51,7 +51,7 @@ class UI:
         self.datetime_now = get_datetime(timezone=self.timezone)
         self.weather_data = get_weather(latitude= self.location_latlng[0], longitude=self.location_latlng[1])
 
-        self.maps = create_map_with_weather_layer()
+        self.maps = None
 
         self.window = tkinter.Tk()
         self.window.title("Weather")
@@ -93,10 +93,58 @@ class UI:
         # Weather Tile Section.
         self.weather_tile()
 
+        # create button.
+        self.temperature_button = tkinter.Button(self.window, text= "Temperature", width= 10, height= 1,
+                                                 font= ('arial', 20, 'bold'), command= self.display_temperature)
+        self.temperature_button.place(x= 100, y= 510)
+
+        self.cloud_button = tkinter.Button(self.window, text="Cloud", width=10, height=1,
+                                                 font=('arial', 20, 'bold'), command=self.display_cloud)
+        self.cloud_button.place(x=300, y=510)
+
+        self.precipitation_button = tkinter.Button(self.window, text="Precipitation", width=10, height=1,
+                                           font=('arial', 20, 'bold'), command=self.display_precipitation)
+        self.precipitation_button.place(x=100, y=610)
+
+        self.pressure_button = tkinter.Button(self.window, text="Pressure", width=10, height=1,
+                                                   font=('arial', 20, 'bold'), command=self.display_pressure)
+        self.pressure_button.place(x=300, y=610)
 
         self.update_time()
         self.update_date()
         self.draw_weather()
+
+    def display_pressure(self):
+
+        self.maps = create_map_with_weather_layer(layer= 'pressure_new')
+        path = "/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html"
+        # Create the webview window
+        webview.create_window("Temperature Map", url=f'file://{path}')
+        webview.start()
+
+    def display_precipitation(self):
+
+        self.maps = create_map_with_weather_layer(layer= 'precipitation_new')
+        path = "/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html"
+        # Create the webview window
+        webview.create_window("Temperature Map", url=f'file://{path}')
+        webview.start()
+
+    def display_temperature(self):
+
+        self.maps = create_map_with_weather_layer(layer= 'temp_new')
+        path = "/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html"
+        # Create the webview window
+        webview.create_window("Temperature Map", url=f'file://{path}')
+        webview.start()
+
+    def display_cloud(self):
+
+        self.maps = create_map_with_weather_layer(layer='clouds_new')
+        path = "/Users/gauravsingh/pythonProject/pythonlearning/Projects/weather_app/weather_map.html"
+        # Create the webview window
+        webview.create_window("Temperature Map", url=f'file://{path}')
+        webview.start()
 
 
     def weather_tile(self):
